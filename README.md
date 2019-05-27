@@ -6,7 +6,7 @@ Note that this repository is for learning purpose only, please be informed if it
 
 ## How to use
 1. Install python 3.6 or above, suppose your python has been installed under ``D:\Program Files\Python3``, if not, please modify the run.bat script variable ``PYTHON_DIR``.
-2. Update config.py ``download_dir`` , it is a parameter defining where captcha_code.php has been downloaed to.
+2. Update config.py ``download_dir`` , it is a parameter defining where captcha_code.php has been download to.
 3. Double click run.bat to run the script
 
 

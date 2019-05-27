@@ -36,7 +36,7 @@ def run():
 	time.sleep(1)
 
 	q3 = driver.find_element_by_xpath("//input[@name='a3']")
-	choices = [ str(x) for x in range(50, 1100, 50)]
+	choices = [ str(x) for x in range(100, 2000, 100)]
 	q3.send_keys(random.choice(choices))
 	
 	for x in range(1, 7):
@@ -49,7 +49,7 @@ def run():
 	time.sleep(2)
 
 	for x in range(1, 12):
-		idx = random.choice([0,1,2])
+		idx = random.choice([0,1,2,5])
 		xpath = "//input[@name='a6_{}']".format(x)
 		q6_subq = driver.find_elements_by_xpath(xpath)[idx]
 		q6_subq.click()
