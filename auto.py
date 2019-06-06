@@ -4,7 +4,7 @@ import random
 from download_img import download, BASE_URL
 from selenium.webdriver import ActionChains
 from pyrobot import Robot, Keys
-from test import test
+from ocr import test
 import os
 from config import Config
 
@@ -33,10 +33,9 @@ def run():
 	
 	q2 = driver.find_element_by_xpath("//input[@name='a2']")
 	q2.click()
-	time.sleep(1)
 
 	q3 = driver.find_element_by_xpath("//input[@name='a3']")
-	choices = [ str(x) for x in range(100, 2000, 100)]
+	choices = [ str(x) for x in range(100, 600, 50)]
 	q3.send_keys(random.choice(choices))
 	
 	for x in range(1, 7):
@@ -46,14 +45,12 @@ def run():
 
 	q5 = driver.find_elements_by_xpath("//input[@name='a5']")[4]
 	q5.click()
-	time.sleep(2)
 
 	for x in range(1, 12):
-		idx = random.choice([0,1,2,5])
+		idx = random.choice([0,1])
 		xpath = "//input[@name='a6_{}']".format(x)
 		q6_subq = driver.find_elements_by_xpath(xpath)[idx]
 		q6_subq.click()
-	time.sleep(1)
 
 	gender = random.randint(0,1)
 	q7 = driver.find_elements_by_xpath("//input[@name='gender']")[gender]
@@ -68,44 +65,57 @@ def run():
 	q9 = driver.find_elements_by_xpath("//input[@name='occupation']")[occup]
 	q9.click()
 
-	time.sleep(2)
 
 	confirm_chkbox = driver.find_elements_by_xpath("//input[@type='checkbox']")[-1]
 	confirm_chkbox.click()
 
-	img = driver.find_element_by_id("captcha-image")
-	# src = img.get_attribute('src')
-	# download(src, "tmp.png")
-	action_chains = ActionChains(driver)
-	action_chains.context_click(img).perform()
+	try_count = 0
+	success = False
 
-	robot = Robot()
-	robot.key_press("v")
-	robot.key_release("v")
-	time.sleep(2)
-	robot.key_press(Keys.enter)
-	robot.key_release(Keys.enter)
-	time.sleep(8)
+	while not success:
+		img = driver.find_element_by_id("captcha-image")
+		# src = img.get_attribute('src')
+		# download(src, "tmp.png")
+		action_chains = ActionChains(driver)
+		action_chains.context_click(img).perform()
 
-	# SET download_dir as the default download location of the pop up window
-	img_path = os.path.join(Config.download_dir, "captcha_code.php")
-	result = test(img_path)
-	print("Captcha Code: ", result)
+		robot = Robot()
+		robot.key_press("v")
+		robot.key_release("v")
+		time.sleep(2)
+		robot.key_press(Keys.enter)
+		robot.key_release(Keys.enter)
+		time.sleep(4)
 
-	if os.path.exists(img_path):
-		os.remove(img_path)
 
-	captcha_box = driver.find_element_by_xpath("//input[@name='captcha_code']")
-	captcha_box.send_keys(result)
-	time.sleep(2)
+		# SET download_dir as the default download location of the pop up window
+		img_path = os.path.join(Config.download_dir, "captcha_code.php")
+		result = test(img_path)
+		print("Captcha Code: ", result)
 
-	submit_btn = driver.find_element_by_xpath("//input[@type='submit']")
-	submit_btn.click()
-	time.sleep(1)
+		if os.path.exists(img_path):
+			os.remove(img_path)
+
+		captcha_box = driver.find_element_by_xpath("//input[@name='captcha_code']")
+		captcha_box.send_keys(result)
+		time.sleep(1)
+
+		submit_btn = driver.find_element_by_xpath("//input[@type='submit']")
+		submit_btn.click()
+		time.sleep(1)
+
+		try:
+			driver.find_element_by_xpath("//input[@name='captcha_code']")
+			try_count += 1
+		except:
+			success = True
 
 	driver.quit()
 
-
+i = 0
 while True:
 	run()
-	time.sleep(5)
+	i += 1
+	if i % 1000 == 0: print("Processed {} survey".format(i))
+	time.sleep(1)
+	

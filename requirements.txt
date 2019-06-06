@@ -1,3 +1,5 @@
 requests
 selenium
 opencv-python
+Pillow
+pytesseract

@@ -17,7 +17,7 @@ if __name__ == "__main__":
 	if not os.path.exists("img"):
 		os.makedirs("img")
 
-	for x in range(100):
+	for x in range(10000):
 		img_url = BASE_URL
 		img_path = os.path.join("img/{}.png".format(x))
 		download(img_url, img_path)

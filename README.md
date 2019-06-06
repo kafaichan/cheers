@@ -13,3 +13,4 @@ Note that this repository is for learning purpose only, please be informed if it
 ## Reference
 - https://github.com/chriskiehl/pyrobot
 - Chrome driver: https://chromedriver.storage.googleapis.com/index.html?path=74.0.3729.6/
+- https://github.com/tesseract-ocr/tesseract
